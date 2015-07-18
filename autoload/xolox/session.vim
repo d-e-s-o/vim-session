@@ -33,15 +33,6 @@ function! xolox#session#save_session(commands, filename) " {{{2
   if &verbose >= 1
     call add(a:commands, 'set verbose=' . &verbose)
   endif
-  " We save the GUI options only for global sessions, not for tab scoped
-  " sessions. Also, if the Vim we're currently running in doesn't have GUI
-  " support, Vim will report &go as an empty string. We should never persist
-  " this value if the user didn't specifically set it! Otherwise the next time
-  " the session is restored in a GUI Vim, things will look funky :-).
-  if has('gui') && is_all_tabs
-    call add(a:commands, 'set guioptions=' . escape(&go, ' "\'))
-    call add(a:commands, 'silent! set guifont=' . escape(&gfn, ' "\'))
-  endif
   call xolox#session#save_globals(a:commands)
   if is_all_tabs
     call xolox#session#save_features(a:commands)
